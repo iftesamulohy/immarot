@@ -1,0 +1,21 @@
+{% extends "immarot/base.html" %}
+
+{% block title %}{{ menu.title }} Detail{% endblock %}
+
+{% block content %}
+    <div class="menu-detail">
+        <h1>{{ menu.name }} - {{ action|capfirst }}</h1>
+
+        {% if action == 'view' %}
+            <p>View content for {{ menu.name }}.</p>
+        {% elif action == 'add' %}
+            <p>Add new item to {{ menu.name }}.</p>
+        {% elif action == 'change' %}
+            <p>Edit content for {{ menu.name }}.</p>
+        {% elif action == 'delete' %}
+            <p>Delete content from {{ menu.name }}.</p>
+        {% else %}
+            <p>Invalid action.</p>
+        {% endif %}
+    </div>
+{% endblock %}

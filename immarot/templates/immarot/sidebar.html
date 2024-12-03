@@ -1,0 +1,21 @@
+{% load static %}
+<div class="main-sidebar sidebar-style-2">
+    <aside id="sidebar-wrapper">
+        <div class="sidebar-brand">
+            <a href="{% url 'index' %}">
+                <img alt="image" src="{% static 'immarot/assets/img/logo.png' %}" class="header-logo" />
+            </a>
+        </div>
+        
+        <ul class="sidebar-menu">
+            {% for menu in menu_permissions %}
+                <li class="dropdown">
+                    <a href="{% url 'menu-detail' menu.slug 'view' menu.app_name menu.model_name menu.fields %}" class="nav-link">
+                        <i data-feather="package"></i>
+                        <span>{{ menu.name }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </aside>
+</div>

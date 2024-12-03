@@ -1,0 +1,100 @@
+{% extends "immarot/base.html" %}
+{% load static %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+{% load dynamic_forms %}
+{% load custom_filters %}
+
+<div class="loader"></div>
+<div id="app">
+    <div class="main-wrapper main-wrapper-1">
+        {% include "immarot/navbar.html" %}
+        {% include "immarot/sidebar.html" with menu_permissions=menu_permissions %}
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            {% if action == 'view' %}
+            <section class="section">
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>All {{ model_name }}
+                                        {% for permission in menu_permissions %}
+                                        {% if permission.slug == slug %}
+                                        {% if permission.permissions.add %}
+                                        <a href="{% url 'menu-detail' permission.slug 'add' permission.app_name permission.model_name permission.fields %}" class="btn btn-icon btn-primary">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                        {% endif %}
+                                        {% endif %}
+                                        {% endfor %}
+                                    </h4>
+                                    <div class="card-header-form">
+                                        <form>
+                                            <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search">
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                            </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- Collapsible Search Section -->
+                                    
+                                </div>
+
+                                
+
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    {% for field in field_names %}
+                                                    <th>{{ field|capfirst }}</th>
+                                                    {% endfor %}
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for row in table_data %}
+                                                <tr>
+                                                    {% for field in field_names %}
+                                                    <td>{{ row|get:field }}</td>
+                                                    {% endfor %}
+                                                    <td>
+                                                        {% for permission in menu_permissions %}
+                                                        {% if permission.slug == slug %}
+                                                        {% if permission.permissions.change %}
+                                                        <a href="{% url 'menu-detail' permission.slug 'edit' permission.app_name permission.model_name permission.fields %}?id={{ row.id }}" class="btn btn-icon btn-primary">
+                                                            <i class="far fa-edit"></i>
+                                                        </a>
+                                                        {% endif %}
+                                                        {% if permission.permissions.delete %}
+                                                        <a href="{% url 'menu-detail' permission.slug 'view' permission.app_name permission.model_name permission.fields %}?task=delete&id={{ row.id }}" class="btn btn-icon btn-danger">
+                                                            <i class="fas fa-times"></i></a>
+                                                        {% endif %}
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% endif %}
+        </div>
+
+        {% include "immarot/sidesettings.html" %}
+    </div>
+    {% include "immarot/footer.html" %}
+</div>
+{% endblock %}

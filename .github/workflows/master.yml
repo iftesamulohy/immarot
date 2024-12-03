@@ -1,0 +1,62 @@
+# name: Deploy website on push
+
+# on:
+#   push:
+#     branches:
+#       - master
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v2
+
+#     - name: Deploy to FTP
+#       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+#       with:
+#         server: ftp.vitasoftsolutions.com
+#         username: ${{ secrets.ftp_username }}
+#         password: ${{ secrets.ftp_password }}
+name: Deploy website on push
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+    
+
+    
+
+    # - name: Collect static files
+    #   run: |
+    #     python manage.py collectstatic --noinput
+
+    - name: Deploy to FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ftp.moonsgallerysystem.com
+        username: ${{ secrets.ftp_username }}
+        password: ${{ secrets.ftp_password }}
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Django migrations
+      run: |
+        python manage.py makemigrations
+        python manage.py migrate

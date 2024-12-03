@@ -1,0 +1,157 @@
+{% extends "immarot/base.html" %}
+{% load static %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+
+{% load dynamic_forms %}
+{% load custom_filters %}
+<div class="loader"></div>
+<div id="app">
+   <div class="main-wrapper main-wrapper-1">
+      {% include "immarot/navbar.html" %}
+      {% include "immarot/sidebar.html" with menu_permissions=menu_permissions %}
+      <!-- Main Content -->
+      <div class="main-content">
+      {% if action == 'view'%}
+         <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>All {{model_name}}
+                        {% for permission in menu_permissions %}
+                            {% if permission.slug == slug %}  <!-- Match the correct slug -->
+                                {% if permission.permissions.add %}
+                                    <a href="{% url 'menu-detail' permission.slug 'add' permission.app_name permission.model_name permission.fields %}" class="btn btn-icon btn-primary">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </h4>
+                    <div class="card-header-form">
+                        <form method="get">
+                            <div class="input-group">
+                            <input type="text" name="search" class="form-control" placeholder="Search" value="{{ request.GET.search }}">
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                            </div>
+                            </div>
+                        </form>
+                    </div>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                {% for field in field_names %}
+                                    <th>{{ field|format_field }}</th>
+                                {% endfor %}
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in table_data %}
+                                <tr>
+                                    {% for field in field_names %}
+                                        <td>{{ row|get:field }}</td>
+                                    {% endfor %}
+                                    <td>
+                                        {% for permission in menu_permissions %}
+                                        
+                                          {% if permission.slug == slug %}
+                                              {% if permission.permissions.change %}
+                                                  <a href="{% url 'menu-detail' permission.slug 'edit' permission.app_name permission.model_name permission.fields %}?id={{ row.id }}" class="btn btn-icon btn-primary">
+                                                      <i class="far fa-edit"></i>
+                                                  </a>
+                                              {% endif %}
+                                              {% if permission.permissions.delete %}
+                                                  <a href="{% url 'menu-detail' permission.slug 'view' permission.app_name permission.model_name permission.fields %}?task=delete&id={{ row.id }}" class="btn btn-icon btn-danger">
+                                                      <i class="fas fa-times"></i></a>
+                                              {% endif %}
+                                          {% endif %}
+                                      {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      {% elif action == 'add' %}
+        <section class="section">
+                <div class="section-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% get_model_form app_name model_name fields=fields as form %}
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Create {{ model_name }}</h4>
+                            </div>
+                            <div class="card-body">
+                                {% for field in form %}
+                                    <div class="form-group">
+                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                        {{ field }}
+                                        {% if field.help_text %}
+                                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        </section>
+        {% elif action == 'edit' %}
+        <section class="section">
+            <div class="section-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Edit {{ model_name }} - {{ instance }}</h4>
+                        </div>
+                        <div class="card-body">
+                            {% for field in form %}
+                                <div class="form-group">
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    
+                                        {{ field }}
+                                    
+                                    {% if field.help_text %}
+                                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </section>
+      {% else %}
+            <p>You Havenot Permission.</p>
+        {% endif %}  
+
+        {% include "immarot/sidesettings.html" %}
+      </div>
+      {% include "immarot/footer.html" %}
+   </div>
+</div>
+{% endblock %}

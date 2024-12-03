@@ -1,0 +1,28 @@
+{% load custom_filters %}  <!-- Make sure to load your custom filters -->
+<div class="container mt-5">
+    <h1>{{ model_name }}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card">
+            <div class="card-header">
+                <h4>{% if action == 'edit' %}Edit{% else %}Add{% endif %} {{ model_name }}</h4>
+            </div>
+            <div class="card-body">
+                {% for field in form %}
+                    <div class="form-group mb-3">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field|add_class:"form-control" }} <!-- Adding Bootstrap form-control class -->
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-success">
+                    {% if action == 'edit' %}Update{% else %}Add{% endif %}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

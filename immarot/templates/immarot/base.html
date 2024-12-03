@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - Constraction ERP</title>
+    
+    {% load static %} <!-- Add this line to load static files -->
+        <!-- General CSS Files -->
+    <link rel="stylesheet" href="{% static 'immarot/assets/css/app.min.css' %}">
+    <link rel="stylesheet" href="{% static 'immarot/assets/bundles/bootstrap-daterangepicker/daterangepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'immarot/assets/bundles/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css' %}">
+    <link rel="stylesheet" href="{% static 'immarot/assets/bundles/select2/dist/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'immarot/assets/bundles/jquery-selectric/selectric.css' %}">
+    <link rel="stylesheet" href="{% static 'immarot/assets/bundles/bootstrap-timepicker/css/bootstrap-timepicker.min.css' %}">
+    <link rel="stylesheet" href="{% static 'immarot/assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="{% static 'immarot/assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'immarot/assets/css/components.css' %}">
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="{% static 'immarot/assets/css/custom.css' %}">
+    {% comment %} <link rel='shortcut icon' type='image/x-icon' href='immarot/assets/img/favicon.ico' /> {% endcomment %}
+    {% block css_files %}
+    
+    {% endblock css_files %}
+</head>
+<body>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+    <script src="{% static 'immarot/assets/js/app.min.js' %}"></script>
+  <!-- JS Libraies -->
+  <script src="{% static 'immarot/assets/bundles/cleave-js/dist/cleave.min.js' %}"></script>
+  <script src="{% static 'immarot/assets/bundles/cleave-js/dist/addons/cleave-phone.us.js' %}"></script>
+  <script src="{% static 'immarot/assets/bundles/jquery-pwstrength/jquery.pwstrength.min.js' %}"></script>
+  <script src="{% static 'immarot/assets/bundles/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+  <script src="{% static 'immarot/assets/bundles/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js' %}"></script>
+  <script src="{% static 'immarot/assets/bundles/bootstrap-timepicker/js/bootstrap-timepicker.min.js' %}"></script>
+  <script src="{% static 'immarot/assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
+  <script src="{% static 'immarot/assets/bundles/select2/dist/js/select2.full.min.js' %}"></script>
+  <script src="{% static 'immarot/assets/bundles/jquery-selectric/jquery.selectric.min.js' %}"></script>
+  <!-- Page Specific JS File -->
+  <script src="{% static 'immarot/assets/js/page/forms-advanced-forms.js' %}"></script>
+  <script src="{% static 'immarot/assets/js/page/advance-table.js' %}"></script>
+  <!-- Template JS File -->
+  <script src="{% static 'immarot/assets/js/scripts.js' %}"></script>
+  <!-- Custom JS File -->
+  <script src="{% static 'immarot/assets/js/custom.js' %}"></script>
+</body>
+</html>
